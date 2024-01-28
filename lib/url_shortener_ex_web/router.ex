@@ -20,6 +20,11 @@ defmodule UrlShortenerExWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/api", UrlShortenerExWeb do
+    pipe_through :api
+    resources "/url_mappings", UrlMappingController, except: [:new, :edit]
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", UrlShortenerExWeb do
   #   pipe_through :api
