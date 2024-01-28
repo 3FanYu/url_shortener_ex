@@ -13,10 +13,11 @@ defmodule UrlShortenerExWeb.UrlMappingController do
 
   def create(conn, %{"url_mapping" => url_mapping_params}) do
     with {:ok, %UrlMapping{} = url_mapping} <- UrlShortener.create_url_mapping(url_mapping_params) do
+      decorated_url_mapping = decorate_short_url(url_mapping)
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/url_mappings/#{url_mapping}")
-      |> render(:show, url_mapping: url_mapping)
+      |> render(:show, url_mapping: decorated_url_mapping)
     end
   end
 
@@ -40,4 +41,9 @@ defmodule UrlShortenerExWeb.UrlMappingController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  defp decorate_short_url(url_mapping) do
+    Map.put(url_mapping, :short_url, "http://localhost:4000/#{url_mapping.short_url}")
+  end
+
 end

@@ -50,8 +50,9 @@ defmodule UrlShortenerEx.UrlShortener do
 
   """
   def create_url_mapping(attrs \\ %{}) do
+    updated_attrs = Map.put(attrs, "short_url", UrlMapping.generate_short_url())
     %UrlMapping{}
-    |> UrlMapping.changeset(attrs)
+    |> UrlMapping.changeset(updated_attrs)
     |> Repo.insert()
   end
 
