@@ -18,6 +18,7 @@ defmodule UrlShortenerExWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/:short_url", PageController, :redirector
   end
 
   scope "/api", UrlShortenerExWeb do

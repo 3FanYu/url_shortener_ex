@@ -102,4 +102,22 @@ defmodule UrlShortenerEx.UrlShortener do
   def change_url_mapping(%UrlMapping{} = url_mapping, attrs \\ %{}) do
     UrlMapping.changeset(url_mapping, attrs)
   end
+
+
+  @doc """
+  Gets a single url_mapping.
+
+  Raises `Ecto.NoResultsError` if the Url mapping does not exist.
+
+  ## Examples
+
+      iex> get_url_mapping_by_short_url!("1rU1va")
+      %UrlMapping{}
+
+      iex> get_url_mapping_by_short_url!("something_not_exist")
+      ** (Ecto.NoResultsError)
+  """
+  def get_url_mapping_by_short_url!(short_url) do
+    Repo.get_by(UrlMapping, short_url: short_url)
+  end
 end
