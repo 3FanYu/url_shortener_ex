@@ -17,7 +17,9 @@ defmodule UrlShortenerExWeb.UrlMappingController do
       # Add prefix to the short url
       decorated_url_mapping = decorate_short_url(url_mapping)
       # Insert the mapping into the cache
-      Cache.insert(url_mapping.short_url, url_mapping.original_url)
+      case Cache.insert(url_mapping.short_url, url_mapping.original_url) do
+        true -> IO.puts("Inserted #{url_mapping.short_url} into cache")
+      end
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/url_mappings/#{url_mapping}")
