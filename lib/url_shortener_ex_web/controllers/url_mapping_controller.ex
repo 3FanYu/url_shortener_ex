@@ -3,6 +3,7 @@ defmodule UrlShortenerExWeb.UrlMappingController do
 
   alias UrlShortenerEx.UrlShortener
   alias UrlShortenerEx.UrlShortener.UrlMapping
+  alias UrlShortenerEx.Cache
 
   action_fallback UrlShortenerExWeb.FallbackController
 
@@ -13,7 +14,10 @@ defmodule UrlShortenerExWeb.UrlMappingController do
 
   def create(conn, %{"url_mapping" => url_mapping_params}) do
     with {:ok, %UrlMapping{} = url_mapping} <- UrlShortener.create_url_mapping(url_mapping_params) do
+      # Add prefix to the short url
       decorated_url_mapping = decorate_short_url(url_mapping)
+      # Insert the mapping into the cache
+      Cache.insert(url_mapping.short_url, url_mapping.original_url)
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/url_mappings/#{url_mapping}")
