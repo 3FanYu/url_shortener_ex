@@ -2,10 +2,11 @@ import Config
 
 # Configure your database
 config :url_shortener_ex, UrlShortenerEx.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "url_shortener_ex_dev",
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASSWORD"),
+  database: System.get_env("DB_NAME"),
+  hostname: System.get_env("DB_HOST"),
+  port: String.to_integer(System.get_env("DB_PORT") || "5432"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -19,7 +20,7 @@ config :url_shortener_ex, UrlShortenerEx.Repo,
 config :url_shortener_ex, UrlShortenerExWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
