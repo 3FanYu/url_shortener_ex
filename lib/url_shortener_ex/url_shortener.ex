@@ -50,7 +50,7 @@ defmodule UrlShortenerEx.UrlShortener do
 
   """
   def create_url_mapping(attrs \\ %{}) do
-    updated_attrs = Map.put(attrs, "short_url", UrlMapping.generate_short_url())
+    updated_attrs = Map.put(attrs, "short_url", generate_short_url())
     %UrlMapping{}
     |> UrlMapping.changeset(updated_attrs)
     |> Repo.insert()
@@ -136,5 +136,19 @@ defmodule UrlShortenerEx.UrlShortener do
 
     # Delete the records
     Repo.delete_all(query)
+  end
+
+  defp generate_short_url do
+    current_pid = self()
+    |> inspect()
+    |> String.split(".")
+    |> Enum.at(1)
+
+    DateTime.utc_now()
+    |> DateTime.to_unix()
+    |> Integer.to_string()
+    |> (fn timestamp_string -> "#{timestamp_string}#{current_pid}" end).()
+    |> String.to_integer()
+    |> Base62.encode()
   end
 end
