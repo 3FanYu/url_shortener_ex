@@ -144,8 +144,7 @@ defmodule UrlShortenerEx.UrlShortener do
     |> String.split(".")
     |> Enum.at(1)
 
-    DateTime.utc_now()
-    |> DateTime.to_unix()
+    System.system_time(:millisecond)
     |> Integer.to_string()
     |> (fn timestamp_string -> "#{timestamp_string}#{current_pid}" end).()
     |> String.to_integer()
