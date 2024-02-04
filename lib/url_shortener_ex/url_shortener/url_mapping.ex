@@ -3,7 +3,7 @@ defmodule UrlShortenerEx.UrlShortener.UrlMapping do
   import Ecto.Changeset
 
   schema "url_mappings" do
-    field :short_url, :string
+    field :short_url_id, :integer
     field :original_url, :string
 
     timestamps()
@@ -12,8 +12,8 @@ defmodule UrlShortenerEx.UrlShortener.UrlMapping do
   @doc false
   def changeset(url_mapping, attrs) do
     url_mapping
-    |> cast(attrs, [:short_url, :original_url])
-    |> validate_required([:short_url, :original_url])
+    |> cast(attrs, [:short_url_id, :original_url])
+    |> validate_required([:short_url_id, :original_url])
   end
 
 end

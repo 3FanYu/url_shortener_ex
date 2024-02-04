@@ -50,7 +50,7 @@ defmodule UrlShortenerEx.UrlShortener do
 
   """
   def create_url_mapping(attrs \\ %{}) do
-    updated_attrs = Map.put(attrs, "short_url", generate_short_url())
+    updated_attrs = Map.put(attrs, "short_url_id", generate_unique_id())
     %UrlMapping{}
     |> UrlMapping.changeset(updated_attrs)
     |> Repo.insert()
@@ -117,8 +117,8 @@ defmodule UrlShortenerEx.UrlShortener do
       iex> get_url_mapping_by_short_url!("something_not_exist")
       ** (Ecto.NoResultsError)
   """
-  def get_url_mapping_by_short_url!(short_url) do
-    Repo.get_by(UrlMapping, short_url: short_url)
+  def get_url_mapping_by_short_url_id!(short_url_id) do
+    Repo.get_by(UrlMapping, short_url_id: short_url_id)
   end
 
   @doc """
@@ -138,7 +138,7 @@ defmodule UrlShortenerEx.UrlShortener do
     Repo.delete_all(query)
   end
 
-  defp generate_short_url do
+  defp generate_unique_id do
     current_pid = self()
     |> inspect()
     |> String.split(".")
@@ -149,6 +149,5 @@ defmodule UrlShortenerEx.UrlShortener do
     |> Integer.to_string()
     |> (fn timestamp_string -> "#{timestamp_string}#{current_pid}" end).()
     |> String.to_integer()
-    |> Base62.encode()
   end
 end

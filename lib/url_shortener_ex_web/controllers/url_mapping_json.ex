@@ -16,9 +16,10 @@ defmodule UrlShortenerExWeb.UrlMappingJSON do
   end
 
   defp data(%UrlMapping{} = url_mapping) do
+    short_url = "http://localhost:4000/#{Base62.encode(url_mapping.short_url_id)}"
     %{
       id: url_mapping.id,
-      short_url: url_mapping.short_url,
+      short_url: short_url,
       original_url: url_mapping.original_url
     }
   end

@@ -14,16 +14,14 @@ defmodule UrlShortenerExWeb.UrlMappingController do
 
   def create(conn, %{"url_mapping" => url_mapping_params}) do
     with {:ok, %UrlMapping{} = url_mapping} <- UrlShortener.create_url_mapping(url_mapping_params) do
-      # Add prefix to the short url
-      decorated_url_mapping = decorate_short_url(url_mapping)
       # Insert the mapping into the cache
-      case Cache.insert(url_mapping.short_url, url_mapping.original_url) do
-        true -> IO.puts("Inserted #{url_mapping.short_url} into cache")
+      case Cache.insert(url_mapping.short_url_id, url_mapping.original_url) do
+        true -> IO.puts("Inserted #{url_mapping.short_url_id} into cache")
       end
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/url_mappings/#{url_mapping}")
-      |> render(:show, url_mapping: decorated_url_mapping)
+      |> render(:show, url_mapping: url_mapping)
     end
   end
 
@@ -46,10 +44,6 @@ defmodule UrlShortenerExWeb.UrlMappingController do
     with {:ok, %UrlMapping{}} <- UrlShortener.delete_url_mapping(url_mapping) do
       send_resp(conn, :no_content, "")
     end
-  end
-
-  defp decorate_short_url(url_mapping) do
-    Map.put(url_mapping, :short_url, "http://localhost:4000/#{url_mapping.short_url}")
   end
 
 end
