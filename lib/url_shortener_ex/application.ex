@@ -20,7 +20,8 @@ defmodule UrlShortenerEx.Application do
       UrlShortenerExWeb.Endpoint,
       # Start a worker by calling: UrlShortenerEx.Worker.start_link(arg)
       # {UrlShortenerEx.Worker, arg}
-      UrlShortenerEx.Cache
+      UrlShortenerEx.Cache,
+      MyApp.UrlCleaner
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

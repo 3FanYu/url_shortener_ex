@@ -120,4 +120,21 @@ defmodule UrlShortenerEx.UrlShortener do
   def get_url_mapping_by_short_url!(short_url) do
     Repo.get_by(UrlMapping, short_url: short_url)
   end
+
+  @doc """
+  Deletes all `UrlMapping` records from the database that were created before the specified `cutoff_time`.
+
+  Returns a tuple `{:ok, count}` where `count` is the number of records deleted from the database.
+
+  ## Examples
+      iex> MyApp.UrlShortener.delete_old_url_mappings(~U[2023-01-01T00:00:00Z])
+      {:ok, 3}
+  """
+  def delete_old_url_mappings(%DateTime{} = cutoff_time) do
+    # Define a query to select records older than cutoff_time
+    query = from u in UrlMapping, where: u.inserted_at < ^cutoff_time
+
+    # Delete the records
+    Repo.delete_all(query)
+  end
 end
