@@ -15,7 +15,7 @@ curl --location --request POST 'localhost:4000/api/url_mappings' \
 }'
 ```
 6. You should see return value as below
-```
+``$$  $$`
 {"data":{"id":38,"short_url":"http://localhost:4000/1rWctT","original_url":"https://github.com/3FanYu/url_shortener_ex"}}%
 ```
 7. Paste the `short_url` to your browser, and you should be redirected to your favorite website!
